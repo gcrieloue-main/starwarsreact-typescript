@@ -6,18 +6,19 @@ import { configureStore } from '../store';
 import { Layout } from '../modules/layout';
 import { People } from '../modules/people';
 
+import './reset.css';
 import './global.scss';
 
 const store = configureStore();
 
 export const App = () => (
   <Provider store={store}>
-    <Layout>
-      <BrowserRouter>
+    <BrowserRouter>
+      <Layout>
         <Switch>
           <Route path="/" exact component={People} />
         </Switch>
-      </BrowserRouter>
-    </Layout>
+      </Layout>
+    </BrowserRouter>
   </Provider>
 );
