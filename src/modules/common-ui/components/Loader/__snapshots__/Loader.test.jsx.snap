@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders correctly a layout component 1`] = `
+exports[`renders correctly a loader component 1`] = `
 <div
   className="loaderContainer"
 >

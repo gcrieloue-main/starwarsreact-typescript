@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import { createLogger } from 'redux-logger';
 import thunk from 'redux-thunk';
 
@@ -16,7 +16,8 @@ export const configureStore = () => {
     middlewares.push(createLogger());
   }
 
-  const store = createStore(rootReducer, applyMiddleware(...middlewares));
+  const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose; // eslint-disable-line
+  const store = createStore(rootReducer, composeEnhancers(applyMiddleware(...middlewares)));
 
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers

@@ -1,0 +1,14 @@
+.list {
+  margin: 30px auto;
+  max-width: 900px;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.character,
+.gender {
+  min-width: 30%;
+}
