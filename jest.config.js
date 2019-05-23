@@ -2,9 +2,10 @@ module.exports = {
   rootDir: '.',
   testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(t|j)sx?$',
   roots: ['<rootDir>/src'],
-  moduleFileExtensions: ['js', 'jsx', 'json'],
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   transform: {
     '^.+\\.jsx?$': 'babel-jest',
+    '^.+\\.tsx?$': 'ts-jest',
   },
   moduleNameMapper: {
     '^.+\\.(css|styl|less|sass|scss)$': 'identity-obj-proxy',

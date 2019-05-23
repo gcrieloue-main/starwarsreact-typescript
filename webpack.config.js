@@ -4,12 +4,14 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
+const tsConfig = path.join(__dirname, './tsconfig.json');
+
 module.exports = e => {
   let env = e;
   if (!env) env = { production: false };
   const webpackConfigClient = {
     mode: env.production ? 'production' : 'development',
-    entry: './src/index.jsx',
+    entry: './src/index.tsx',
     output: {
       path: path.join(__dirname, './dist'),
       filename: 'bundle.[chunkhash:8].js',
@@ -17,7 +19,7 @@ module.exports = e => {
     },
     resolve: {
       modules: ['node_modules'],
-      extensions: ['.js', '.jsx', '.json'],
+      extensions: ['.ts', '.tsx', '.jsx', '.js', '.json'],
     },
     module: {
       rules: [
@@ -25,6 +27,11 @@ module.exports = e => {
           test: /\.jsx?$/,
           exclude: [/node_modules/, /test/],
           loader: ['babel-loader'],
+        },
+        {
+          test: /\.tsx?$/,
+          exclude: [/node_modules/],
+          loader: ['babel-loader', { loader: 'ts-loader', options: { configFile: tsConfig } }],
         },
         {
           test: /\.css$/,
