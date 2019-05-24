@@ -1,2 +1,2 @@
-export { userReducer } from './reducer';
+export { userReducer, UserStore } from './reducer';
 export { CharacterHeader } from './containers/CharacterHeader';

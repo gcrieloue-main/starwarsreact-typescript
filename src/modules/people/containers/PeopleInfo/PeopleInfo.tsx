@@ -1,19 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import ReactRouterPropTypes from 'react-router-prop-types';
 import { connect } from 'react-redux';
 import { setCharacter as setCharacterAction } from '../../../user/actions';
 import { Loader, Button } from '../../../common-ui';
-import { swAPI } from '../../../swapi';
+import { swAPI, ApiCharacter } from '../../../swapi';
 import { AttributeLine } from './AttributeLine';
 
 import styles from './styles.scss';
+import { RouteComponentProps } from 'react-router';
+import { Store } from '@store';
+import { ThunkDispatch } from 'redux-thunk';
+import { AnyAction } from 'redux';
 
-export const PeopleInfoComponent = ({ name, match, setThisCharacterAsMyCharacter }) => {
-  const [character, setCharacter] = useState(null);
+export type PeopleInfoProps = {
+  name: string | null;
+  setThisCharacterAsMyCharacter: (chracter: ApiCharacter) => void;
+} & RouteComponentProps<{ id: string }>;
+
+export const PeopleInfoComponent = ({ name, match, setThisCharacterAsMyCharacter }: PeopleInfoProps) => {
+  const [character, setCharacter] = useState(null as ApiCharacter | null);
 
   useEffect(() => {
-    swAPI.getCharacter(match.params.id).then(char => {
+    swAPI.getCharacter(+match.params.id).then(char => {
       setCharacter(char);
     });
   }, [match.params.id]);
@@ -47,22 +54,16 @@ export const PeopleInfoComponent = ({ name, match, setThisCharacterAsMyCharacter
   );
 };
 
-PeopleInfoComponent.propTypes = {
-  match: ReactRouterPropTypes.match.isRequired,
-  name: PropTypes.string,
-  setThisCharacterAsMyCharacter: PropTypes.func.isRequired,
-};
-
 PeopleInfoComponent.defaultProps = {
   name: undefined,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: Store) => ({
   name: state.user.character ? state.user.character.name : null,
 });
 
-const mapDispatchToProps = dispatch => ({
-  setThisCharacterAsMyCharacter: character => dispatch(setCharacterAction(character)),
+const mapDispatchToProps = (dispatch: ThunkDispatch<Store, undefined, AnyAction>) => ({
+  setThisCharacterAsMyCharacter: (character: ApiCharacter) => dispatch(setCharacterAction(character)),
 });
 
 export const PeopleInfo = connect(

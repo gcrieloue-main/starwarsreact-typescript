@@ -1,8 +1,13 @@
-import { createStore, applyMiddleware, compose } from 'redux';
+import { createStore, applyMiddleware, compose, Middleware } from 'redux';
 import { createLogger } from 'redux-logger';
 import thunk from 'redux-thunk';
 
 import { createRootReducer } from './reducers';
+import { UserStore } from '../modules/user';
+
+export type Store = {
+  user: UserStore;
+};
 
 /**
  * Store configuration
@@ -11,13 +16,14 @@ import { createRootReducer } from './reducers';
 export const configureStore = () => {
   // Register reducers
   const rootReducer = createRootReducer();
-  const middlewares = [thunk];
+  const middlewares: Middleware[] = [thunk];
   if (process.env.NODE_ENV === 'development') {
     middlewares.push(createLogger());
   }
 
   const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose; // eslint-disable-line
-  const store = createStore(rootReducer, composeEnhancers(applyMiddleware(...middlewares)));
+  const mw = applyMiddleware(...middlewares);
+  const store = createStore(rootReducer, composeEnhancers(mw));
 
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers

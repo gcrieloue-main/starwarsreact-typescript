@@ -1,17 +1,20 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, ChangeEvent } from 'react';
 import { connect } from 'react-redux';
 import { CharacterList } from '../../components/CharacterList';
-import { swAPI } from '../../../swapi';
+import { swAPI, ApiCharacter } from '../../../swapi';
 import { TextInput, Button, Loader } from '../../../common-ui';
 
 import styles from './styles.scss';
 import { fetchAndSetCharacter } from '../../../user/actions';
 
-export const PeopleComponent = ({ setRandomCharacter }) => {
+export type PeopleComponentProps = {
+  setRandomCharacter: any;
+};
+
+export const PeopleComponent = ({ setRandomCharacter }: PeopleComponentProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [value, setValue] = useState('');
-  const [characters, setCharacters] = useState(null);
+  const [characters, setCharacters] = useState(null as ApiCharacter[] | null);
 
   const onSearch = () => {
     setIsLoading(true);
@@ -28,7 +31,7 @@ export const PeopleComponent = ({ setRandomCharacter }) => {
         <TextInput
           className={styles.element}
           placeholder="Luke Skywalker"
-          onChange={event => setValue(event.target.value)}
+          onChange={(event: ChangeEvent<HTMLInputElement>) => setValue(event.target.value)}
           value={value}
         />
         <Button onClick={onSearch}>Rechercher</Button>
@@ -38,15 +41,11 @@ export const PeopleComponent = ({ setRandomCharacter }) => {
   );
 };
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch: any) => ({
   setRandomCharacter: () => {
     dispatch(fetchAndSetCharacter(Math.floor(Math.random() * 87) + 1));
   },
 });
-
-PeopleComponent.propTypes = {
-  setRandomCharacter: PropTypes.func.isRequired,
-};
 
 export const People = connect(
   null,
